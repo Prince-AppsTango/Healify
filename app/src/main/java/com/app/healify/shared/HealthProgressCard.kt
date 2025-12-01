@@ -17,13 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HealthProgressCard(modifier: Modifier = Modifier) {
+fun HealthProgressCard(percent: Float,) {
     val gradientColors = listOf(
         Color(0xFF7ED957),
         Color(0xFF3AB0A2)
     )
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth(0.93f)
             .fillMaxHeight(0.3f)
             .background(
@@ -45,7 +45,7 @@ fun HealthProgressCard(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(10.dp))
             DeterminateGradientCircularLoader(
-                percent = 0.50f,
+                percent = percent.coerceIn(0f, 1f),
                 size = 130.dp,
                 stroke = 10.dp
             )

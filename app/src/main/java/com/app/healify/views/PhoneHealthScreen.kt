@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -44,6 +45,8 @@ fun PhoneHealthScreen() {
     val viewModel: PhoneHealthViewModel = viewModel(
         factory = PhoneHealthVMFactory(BatteryHelper(context))
     )
+    val healthPercent  =  viewModel.healthPercent.collectAsState()
+
     val textList = listOf<String>(
         "Battery",
         "RAM",
@@ -62,7 +65,7 @@ fun PhoneHealthScreen() {
         ) {
             Spacer(modifier = Modifier.height(20.dp))
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
-                HealthProgressCard()
+                HealthProgressCard(percent = healthPercent.value)
             }
             Spacer(modifier = Modifier.height(10.dp))
             Box(modifier = Modifier.padding(horizontal = 15.dp)) {
@@ -95,7 +98,9 @@ fun PhoneHealthScreen() {
                             ),
                             shape = MaterialTheme.shapes.large
                         )
-                        .clickable { }
+                        .clickable {
+                            viewModel.runFullDiagnostics()
+                        }
                         .padding(5.dp),
                     contentAlignment = Alignment.Center
                 ) {
