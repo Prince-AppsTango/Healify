@@ -24,7 +24,7 @@ fun HealthProgressCard(modifier: Modifier = Modifier) {
     )
     Box(
         modifier = modifier
-            .fillMaxWidth(0.9f)
+            .fillMaxWidth(0.93f)
             .fillMaxHeight(0.3f)
             .background(
                 brush = Brush.linearGradient(
