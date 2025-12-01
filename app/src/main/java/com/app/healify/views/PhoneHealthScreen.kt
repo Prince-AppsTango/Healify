@@ -49,7 +49,7 @@ fun PhoneHealthScreen() {
 
     val textList = listOf<String>(
         "Battery",
-        "RAM",
+        "Storage",
         "Memory",
         "Sensors",
         "Camera",
