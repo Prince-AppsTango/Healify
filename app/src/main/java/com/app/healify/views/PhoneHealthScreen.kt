@@ -46,15 +46,13 @@ fun PhoneHealthScreen() {
     )
     val textList = listOf<String>(
         "Battery",
-        "Storage",
+        "RAM",
         "Memory",
-        "CPU",
-        "Temperature",
+        "Sensors",
+        "Camera",
         "Network",
-        "Security",
-        "Performance",
-        "Security",
-        "Performance",
+        "Speakers",
+        "Microphone",
     )
     SafeArea {
         Column(
