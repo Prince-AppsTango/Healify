@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CategoryCard(modifier: Modifier = Modifier) {
+fun CategoryCard(text: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier
         .height(90.dp)
         .width(180.dp)
@@ -41,7 +41,7 @@ fun CategoryCard(modifier: Modifier = Modifier) {
             Spacer(modifier= Modifier.width(10.dp))
             Column {
                 Text(
-                    "Battery",
+                    text,
                     color = Color.Black,
                     fontWeight = FontWeight.W500,
                     fontSize = 18.sp,
