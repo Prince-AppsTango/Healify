@@ -53,6 +53,8 @@ fun PhoneHealthScreen() {
         "Network",
         "Security",
         "Performance",
+        "Security",
+        "Performance",
     )
     SafeArea {
         Column(
@@ -68,12 +70,11 @@ fun PhoneHealthScreen() {
             Box(modifier = Modifier.padding(horizontal = 15.dp)) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxHeight(0.8f),
+                    modifier = Modifier.fillMaxHeight(0.85f),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     content = {
                         items(textList.size) { item ->
-                            Spacer(modifier = Modifier.height(10.dp))
                             CategoryCard(
                                 text = textList[item],
                                 modifier = Modifier

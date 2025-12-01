@@ -2,6 +2,7 @@ package com.app.healify.shared
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,11 +28,12 @@ fun CategoryCard(text: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier
         .height(90.dp)
         .width(180.dp)
+        .border(width = 0.5.dp, color = Color.LightGray.copy(alpha = 0.3f), shape = MaterialTheme.shapes.large)
         .shadow(
             elevation = 10.dp,
             shape = MaterialTheme.shapes.large,
-            ambientColor = Color.Black,
-            spotColor = Color.Black
+            ambientColor = Color.LightGray,
+            spotColor = Color.LightGray
         )
         .background(color = Color.White, shape = MaterialTheme.shapes.large)
         .padding(10.dp)
