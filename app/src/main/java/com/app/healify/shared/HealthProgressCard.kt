@@ -45,7 +45,7 @@ fun HealthProgressCard(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(10.dp))
             DeterminateGradientCircularLoader(
-                percent = 0.80f,
+                percent = 0.50f,
                 size = 130.dp,
                 stroke = 10.dp
             )
