@@ -124,6 +124,28 @@ fun PhoneHealthScreen() {
                         modifier = Modifier.weight(1f)
                     )
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(modifier = Modifier.fillMaxWidth()){
+                    CategoryCard(
+                        text = "Network",
+                        imageId = R.drawable.network,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.networkInfo?.isConnected == true)
+                            "${phoneHealthStatus.value.firstOrNull()?.networkInfo?.connectionType} ${phoneHealthStatus.value.firstOrNull()?.networkInfo?.linkSpeedMbps}Mbps"
+                        else "Not Connected",
+                        color = if(phoneHealthStatus.value.firstOrNull()?.networkInfo?.isConnected == true) Color(0xFF4CAF50) else Color(0xFFFF5722),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    CategoryCard(
+                        text = "Sensors",
+                        imageId = R.drawable.sensor,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.sensorInfo?.totalSensors != null && phoneHealthStatus.value.firstOrNull()?.sensorInfo?.totalSensors!! > 0)
+                            "${phoneHealthStatus.value.firstOrNull()?.sensorInfo?.totalSensors} Sensors"
+                        else "N/A",
+                        color = if((phoneHealthStatus.value.firstOrNull()?.sensorInfo?.totalSensors ?: 0) > 0) Color(0xFF4CAF50) else Color.Gray,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
             Spacer(modifier = Modifier.weight(1f))
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {

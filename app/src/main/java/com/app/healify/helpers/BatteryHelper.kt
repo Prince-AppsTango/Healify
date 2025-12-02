@@ -2,16 +2,24 @@ package com.app.healify.helpers
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.hardware.camera2.CameraManager
 import android.media.AudioManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.wifi.WifiManager
 import android.os.BatteryManager
+import android.os.Build
 import android.os.Environment
 import android.os.StatFs
 import com.app.healify.models.BatteryHealthModel
 import com.app.healify.models.CameraInfo
 import com.app.healify.models.CpuInfo
 import com.app.healify.models.MicrophoneInfo
+import com.app.healify.models.NetworkInfo
 import com.app.healify.models.RamInfo
+import com.app.healify.models.SensorInfo
 import com.app.healify.models.StorageHealthModel
 import java.io.File
 
@@ -124,6 +132,85 @@ class BatteryHelper(private val context: Context) {
             MicrophoneInfo(isAvailable = isMicAvailable)
         } catch (e: Exception) {
             MicrophoneInfo(isAvailable = false)
+        }
+    }
+
+    fun getNetworkInfo(): NetworkInfo {
+        return try {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val network = connectivityManager.activeNetwork
+                val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+                if (capabilities != null) {
+                    val isConnected = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                    val connectionType = when {
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "WiFi"
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Mobile Data"
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
+                        else -> "Unknown"
+                    }
+
+                    // Get WiFi link speed if available
+                    val linkSpeed = if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+                        wifiManager.connectionInfo.linkSpeed
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            capabilities.linkDownstreamBandwidthKbps / 1000
+                        } else {
+                            0
+                        }
+                    }
+
+                    NetworkInfo(
+                        isConnected = isConnected,
+                        connectionType = connectionType,
+                        linkSpeedMbps = linkSpeed
+                    )
+                } else {
+                    NetworkInfo(isConnected = false, connectionType = "None", linkSpeedMbps = 0)
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                val networkInfo = connectivityManager.activeNetworkInfo
+                NetworkInfo(
+                    isConnected = networkInfo?.isConnected ?: false,
+                    connectionType = networkInfo?.typeName ?: "None",
+                    linkSpeedMbps = 0
+                )
+            }
+        } catch (e: Exception) {
+            NetworkInfo(isConnected = false, connectionType = "Error", linkSpeedMbps = 0)
+        }
+    }
+
+    fun getSensorInfo(): SensorInfo {
+        return try {
+            val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            val allSensors = sensorManager.getSensorList(Sensor.TYPE_ALL)
+
+            val hasAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null
+            val hasGyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null
+            val hasProximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null
+            val hasLightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null
+
+            SensorInfo(
+                totalSensors = allSensors.size,
+                accelerometerAvailable = hasAccelerometer,
+                gyroscopeAvailable = hasGyroscope,
+                proximityAvailable = hasProximity,
+                lightSensorAvailable = hasLightSensor
+            )
+        } catch (e: Exception) {
+            SensorInfo(
+                totalSensors = 0,
+                accelerometerAvailable = false,
+                gyroscopeAvailable = false,
+                proximityAvailable = false,
+                lightSensorAvailable = false
+            )
         }
     }
 

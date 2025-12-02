@@ -17,7 +17,9 @@ data class PhoneHealthModel(
     val ramInfo: RamInfo? = null,
     val cpuInfo: CpuInfo? = null,
     val cameraInfo: CameraInfo? = null,
-    val microphoneInfo: MicrophoneInfo? = null
+    val microphoneInfo: MicrophoneInfo? = null,
+    val networkInfo: NetworkInfo? = null,
+    val sensorInfo: SensorInfo? = null
 )
 
 data class RamInfo(
@@ -40,5 +42,19 @@ data class CameraInfo(
 
 data class MicrophoneInfo(
     val isAvailable: Boolean
+)
+
+data class NetworkInfo(
+    val isConnected: Boolean,
+    val connectionType: String,
+    val linkSpeedMbps: Int
+)
+
+data class SensorInfo(
+    val totalSensors: Int,
+    val accelerometerAvailable: Boolean,
+    val gyroscopeAvailable: Boolean,
+    val proximityAvailable: Boolean,
+    val lightSensorAvailable: Boolean
 )
 
