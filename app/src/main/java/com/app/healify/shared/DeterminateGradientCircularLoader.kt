@@ -91,8 +91,10 @@ fun DeterminateGradientCircularLoader(
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = when {
-                    percent >= 0.9f -> "GOOD"
-                    percent >= 0.75f -> "FAIR"
+                    percent >= 0.9f -> "EXCELLENT"
+                    percent >= 0.8f -> "GOOD"
+                    percent >= 0.7f -> "AVERAGE"
+                    percent >= 0.5f -> "FAIR"
                     else -> "POOR"
                 },
                 fontSize = 16.sp,
