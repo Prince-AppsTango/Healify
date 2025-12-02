@@ -67,7 +67,7 @@ fun PhoneHealthScreen() {
                 Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
                     CategoryCard(
                         text = "Battery",
-                        subTitle = phoneHealthStatus.value.firstOrNull()?.data?.status?.toString() ?: "Unknown",
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.data?.percentage != null) "${phoneHealthStatus.value.firstOrNull()?.data?.percentage}% ${phoneHealthStatus.value.firstOrNull()?.data?.status?.toString()}" else "N/A",
                         color = when(phoneHealthStatus.value.firstOrNull()?.data?.status) {
                             "Good" -> Color(0xFF4CAF50)
                             "Average" -> Color(0xFFFFC107)
