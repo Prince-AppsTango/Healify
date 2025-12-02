@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +55,7 @@ fun PhoneHealthScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(state = rememberScrollState())
                 .background(color = Color.White)
         ) {
             Spacer(modifier = Modifier.height(20.dp))

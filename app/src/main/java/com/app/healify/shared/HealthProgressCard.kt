@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,7 +34,7 @@ fun HealthProgressCard(percent: Float,) {
                     end = Offset(1000f, 500f)
                 ),
                 shape = MaterialTheme.shapes.extraLarge
-            )
+            ).padding(20.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
