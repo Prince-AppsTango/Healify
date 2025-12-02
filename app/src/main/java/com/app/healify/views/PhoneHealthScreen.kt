@@ -89,8 +89,8 @@ fun PhoneHealthScreen() {
                         color = if ((phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB ?: 0.0) >= 2.0) Color.Black else Color.Gray
                     )
                     CategoryCard(
-                        text = "CPU/Core",
-                        subTitle = if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) "${phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cpuName ?: "Unknown"} ${ phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores}" else "N/A",
+                        text = "Cores",
+                        subTitle = if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) "${ phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores}" else "N/A",
                         color =  if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) Color.Black else Color.Gray
                     )
                 }
