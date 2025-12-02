@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.healify.R
 import com.app.healify.shared.CategoryCard
 
 @Composable
@@ -68,6 +66,7 @@ fun PhoneHealthScreen() {
                     CategoryCard(
                         text = "Battery",
                         subTitle = if(phoneHealthStatus.value.firstOrNull()?.data?.percentage != null) "${phoneHealthStatus.value.firstOrNull()?.data?.percentage}% ${phoneHealthStatus.value.firstOrNull()?.data?.status?.toString()}" else "N/A",
+                        imageId = R.drawable.battery,
                         color = when(phoneHealthStatus.value.firstOrNull()?.data?.status) {
                             "Good" -> Color(0xFF4CAF50)
                             "Average" -> Color(0xFFFFC107)
@@ -78,6 +77,7 @@ fun PhoneHealthScreen() {
                     )
                     CategoryCard(
                         text = "Storage",
+                        imageId = R.drawable.database,
                         subTitle = "${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.freeGB?.toInt() ?: 0} GB / ${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.totalGB?.toInt() ?: 0} GB",
                     )
                 }
@@ -85,11 +85,13 @@ fun PhoneHealthScreen() {
                 Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
                     CategoryCard(
                         text = "RAM",
+                        imageId = R.drawable.ram,
                         subTitle = if(phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB != null)  "Free: ${phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB?.toInt() } GB"  else "N/A",
                         color = if ((phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB ?: 0.0) >= 2.0) Color.Black else Color.Gray
                     )
                     CategoryCard(
                         text = "Cores",
+                        imageId = R.drawable.cpu,
                         subTitle = if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) "${ phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores}" else "N/A",
                         color =  if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) Color.Black else Color.Gray
                     )

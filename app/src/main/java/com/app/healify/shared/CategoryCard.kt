@@ -7,24 +7,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 @Composable
-fun CategoryCard(text: String, subTitle:String,color: Color = Color.Black, modifier: Modifier = Modifier) {
+fun CategoryCard(text: String, subTitle:String,color: Color = Color.Black,imageId:Int, modifier: Modifier = Modifier) {
     Box(modifier = modifier
         .width(180.dp)
         .border(width = 0.5.dp, color = Color.LightGray.copy(alpha = 0.3f), shape = MaterialTheme.shapes.large)
@@ -38,7 +35,7 @@ fun CategoryCard(text: String, subTitle:String,color: Color = Color.Black, modif
         .padding(10.dp)
     ) {
         Row {
-            Image(Icons.Default.Home, contentDescription = "icon", modifier = Modifier.size(40.dp))
+            Image( painter = painterResource(imageId), contentDescription = "icon", modifier = Modifier.size(35.dp))
             Spacer(modifier= Modifier.width(10.dp))
             Column {
                 Text(
