@@ -24,6 +24,13 @@ class PhoneHealthViewModel(private val batteryHelper: BatteryHelper) : ViewModel
         val microphoneInfo = batteryHelper.getMicrophoneInfo()
         val networkInfo = batteryHelper.getNetworkInfo()
         val sensorInfo = batteryHelper.getSensorInfo()
+        val displayInfo = batteryHelper.getDisplayInfo()
+        val bluetoothInfo = batteryHelper.getBluetoothInfo()
+        val systemInfo = batteryHelper.getSystemInfo()
+        val nfcInfo = batteryHelper.getNfcInfo()
+        val gpsInfo = batteryHelper.getGpsInfo()
+        val speakerInfo = batteryHelper.getSpeakerInfo()
+
         val score = battery.percentage * 0.3f +
                 ((storage.freeGB / storage.totalGB) * 100).toFloat() * 0.2f +
                 ((ramInfo.freeGB / ramInfo.totalGB) * 100).toFloat() * 0.2f +
@@ -39,7 +46,13 @@ class PhoneHealthViewModel(private val batteryHelper: BatteryHelper) : ViewModel
                 cameraInfo = cameraInfo,
                 microphoneInfo = microphoneInfo,
                 networkInfo = networkInfo,
-                sensorInfo = sensorInfo
+                sensorInfo = sensorInfo,
+                displayInfo = displayInfo,
+                bluetoothInfo = bluetoothInfo,
+                systemInfo = systemInfo,
+                nfcInfo = nfcInfo,
+                gpsInfo = gpsInfo,
+                speakerInfo = speakerInfo
             )
         )
     }

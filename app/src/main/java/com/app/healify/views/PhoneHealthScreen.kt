@@ -146,8 +146,87 @@ fun PhoneHealthScreen() {
                         modifier = Modifier.weight(1f)
                     )
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(modifier = Modifier.fillMaxWidth()){
+                    CategoryCard(
+                        text = "Display",
+                        imageId = R.drawable.display,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.displayInfo?.screenSizeInches != null)
+                            "${"%.1f".format(phoneHealthStatus.value.firstOrNull()?.displayInfo?.screenSizeInches)}\" ${phoneHealthStatus.value.firstOrNull()?.displayInfo?.refreshRate?.toInt()}Hz"
+                        else "N/A",
+                        color = Color.Black,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    CategoryCard(
+                        text = "Bluetooth",
+                        imageId = R.drawable.bluetooth,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.bluetoothInfo?.isSupported == true)
+                            if(phoneHealthStatus.value.firstOrNull()?.bluetoothInfo?.isEnabled == true) "Enabled" else "Disabled"
+                        else "Not Supported",
+                        color = when {
+                            phoneHealthStatus.value.firstOrNull()?.bluetoothInfo?.isEnabled == true -> Color(0xFF4CAF50)
+                            phoneHealthStatus.value.firstOrNull()?.bluetoothInfo?.isSupported == true -> Color(0xFFFFC107)
+                            else -> Color(0xFFFF5722)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(modifier = Modifier.fillMaxWidth()){
+                    CategoryCard(
+                        text = "System",
+                        imageId = R.drawable.system,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.systemInfo?.deviceBrand != null)
+                            "${phoneHealthStatus.value.firstOrNull()?.systemInfo?.deviceBrand} Android ${phoneHealthStatus.value.firstOrNull()?.systemInfo?.androidVersion}"
+                        else "N/A",
+                        color = Color.Black,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    CategoryCard(
+                        text = "NFC",
+                        imageId = R.drawable.nfc,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.nfcInfo?.isSupported == true)
+                            if(phoneHealthStatus.value.firstOrNull()?.nfcInfo?.isEnabled == true) "Enabled" else "Disabled"
+                        else "Not Supported",
+                        color = when {
+                            phoneHealthStatus.value.firstOrNull()?.nfcInfo?.isEnabled == true -> Color(0xFF4CAF50)
+                            phoneHealthStatus.value.firstOrNull()?.nfcInfo?.isSupported == true -> Color(0xFFFFC107)
+                            else -> Color(0xFFFF5722)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(modifier = Modifier.fillMaxWidth()){
+                    CategoryCard(
+                        text = "GPS",
+                        imageId = R.drawable.gps,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.gpsInfo?.isSupported == true)
+                            if(phoneHealthStatus.value.firstOrNull()?.gpsInfo?.isEnabled == true) "Enabled" else "Disabled"
+                        else "Not Supported",
+                        color = when {
+                            phoneHealthStatus.value.firstOrNull()?.gpsInfo?.isEnabled == true -> Color(0xFF4CAF50)
+                            phoneHealthStatus.value.firstOrNull()?.gpsInfo?.isSupported == true -> Color(0xFFFFC107)
+                            else -> Color(0xFFFF5722)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    CategoryCard(
+                        text = "Speaker",
+                        imageId = R.drawable.speaker,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.speakerInfo?.isAvailable == true)
+                            "Vol: ${phoneHealthStatus.value.firstOrNull()?.speakerInfo?.currentVolume}/${phoneHealthStatus.value.firstOrNull()?.speakerInfo?.maxVolume}"
+                        else "N/A",
+                        color = if(phoneHealthStatus.value.firstOrNull()?.speakerInfo?.isAvailable == true) Color(0xFF4CAF50) else Color.Gray,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
             Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(10.dp))
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Box(
                     modifier = Modifier

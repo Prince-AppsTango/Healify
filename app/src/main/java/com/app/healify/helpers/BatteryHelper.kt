@@ -1,27 +1,31 @@
 package com.app.healify.helpers
 import android.app.ActivityManager
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.hardware.camera2.CameraManager
+import android.hardware.display.DisplayManager
+import android.location.LocationManager
 import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
+import android.nfc.NfcAdapter
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
-import com.app.healify.models.BatteryHealthModel
-import com.app.healify.models.CameraInfo
-import com.app.healify.models.CpuInfo
-import com.app.healify.models.MicrophoneInfo
-import com.app.healify.models.NetworkInfo
-import com.app.healify.models.RamInfo
-import com.app.healify.models.SensorInfo
-import com.app.healify.models.StorageHealthModel
+import android.provider.Settings
+import android.util.DisplayMetrics
+import android.view.Display
+import android.view.WindowManager
+import com.app.healify.models.*
 import java.io.File
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class BatteryHelper(private val context: Context) {
 
@@ -210,6 +214,190 @@ class BatteryHelper(private val context: Context) {
                 gyroscopeAvailable = false,
                 proximityAvailable = false,
                 lightSensorAvailable = false
+            )
+        }
+    }
+
+    fun getDisplayInfo(): DisplayInfo {
+        return try {
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                context.display
+            } else {
+                @Suppress("DEPRECATION")
+                windowManager.defaultDisplay
+            }
+
+            val metrics = DisplayMetrics()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                context.display?.getRealMetrics(metrics)
+            } else {
+                @Suppress("DEPRECATION")
+                display?.getRealMetrics(metrics)
+            }
+
+            val widthPixels = metrics.widthPixels
+            val heightPixels = metrics.heightPixels
+            val density = metrics.densityDpi
+
+            // Calculate screen size in inches
+            val widthInches = widthPixels / metrics.xdpi
+            val heightInches = heightPixels / metrics.ydpi
+            val screenSizeInches = sqrt(widthInches.pow(2) + heightInches.pow(2))
+
+            // Get refresh rate
+            val refreshRate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                display?.mode?.refreshRate ?: 60f
+            } else {
+                @Suppress("DEPRECATION")
+                display?.refreshRate ?: 60f
+            }
+
+            // Get brightness level
+            val brightnessLevel = try {
+                Settings.System.getInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS)
+            } catch (e: Exception) {
+                0
+            }
+
+            DisplayInfo(
+                screenSizeInches = screenSizeInches,
+                resolutionWidth = widthPixels,
+                resolutionHeight = heightPixels,
+                refreshRate = refreshRate,
+                density = density,
+                brightnessLevel = brightnessLevel
+            )
+        } catch (e: Exception) {
+            DisplayInfo(
+                screenSizeInches = 0f,
+                resolutionWidth = 0,
+                resolutionHeight = 0,
+                refreshRate = 60f,
+                density = 0,
+                brightnessLevel = 0
+            )
+        }
+    }
+
+    fun getBluetoothInfo(): BluetoothInfo {
+        return try {
+            val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager
+            val bluetoothAdapter = bluetoothManager?.adapter
+
+            val isSupported = bluetoothAdapter != null
+            val isEnabled = bluetoothAdapter?.isEnabled ?: false
+            val deviceName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+                    bluetoothAdapter?.name ?: "Unknown"
+                } else {
+                    "Permission Required"
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                bluetoothAdapter?.name ?: "Unknown"
+            }
+
+            // Bluetooth version detection
+            val bluetoothVersion = when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> "5.0+"
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> "4.2+"
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> "4.1+"
+                else -> "4.0+"
+            }
+
+            BluetoothInfo(
+                isSupported = isSupported,
+                isEnabled = isEnabled,
+                deviceName = deviceName,
+                bluetoothVersion = bluetoothVersion
+            )
+        } catch (e: Exception) {
+            BluetoothInfo(
+                isSupported = false,
+                isEnabled = false,
+                deviceName = "Unknown",
+                bluetoothVersion = "Unknown"
+            )
+        }
+    }
+
+    fun getSystemInfo(): SystemInfo {
+        return try {
+            SystemInfo(
+                androidVersion = Build.VERSION.RELEASE,
+                sdkVersion = Build.VERSION.SDK_INT,
+                deviceManufacturer = Build.MANUFACTURER,
+                deviceModel = Build.MODEL,
+                deviceBrand = Build.BRAND
+            )
+        } catch (e: Exception) {
+            SystemInfo(
+                androidVersion = "Unknown",
+                sdkVersion = 0,
+                deviceManufacturer = "Unknown",
+                deviceModel = "Unknown",
+                deviceBrand = "Unknown"
+            )
+        }
+    }
+
+    fun getNfcInfo(): NfcInfo {
+        return try {
+            val nfcAdapter = NfcAdapter.getDefaultAdapter(context)
+            val isSupported = nfcAdapter != null
+            val isEnabled = nfcAdapter?.isEnabled ?: false
+
+            NfcInfo(
+                isSupported = isSupported,
+                isEnabled = isEnabled
+            )
+        } catch (e: Exception) {
+            NfcInfo(
+                isSupported = false,
+                isEnabled = false
+            )
+        }
+    }
+
+    fun getGpsInfo(): GpsInfo {
+        return try {
+            val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val hasGpsFeature = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS)
+            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            val providers = locationManager.allProviders.size
+
+            GpsInfo(
+                isEnabled = isGpsEnabled,
+                isSupported = hasGpsFeature,
+                providerCount = providers
+            )
+        } catch (e: Exception) {
+            GpsInfo(
+                isEnabled = false,
+                isSupported = false,
+                providerCount = 0
+            )
+        }
+    }
+
+    fun getSpeakerInfo(): SpeakerInfo {
+        return try {
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+            val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+            val hasSpeaker = context.packageManager.hasSystemFeature(PackageManager.FEATURE_AUDIO_OUTPUT)
+
+            SpeakerInfo(
+                isAvailable = hasSpeaker,
+                maxVolume = maxVolume,
+                currentVolume = currentVolume
+            )
+        } catch (e: Exception) {
+            SpeakerInfo(
+                isAvailable = false,
+                maxVolume = 0,
+                currentVolume = 0
             )
         }
     }

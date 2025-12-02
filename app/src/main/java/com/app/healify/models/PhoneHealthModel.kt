@@ -19,7 +19,13 @@ data class PhoneHealthModel(
     val cameraInfo: CameraInfo? = null,
     val microphoneInfo: MicrophoneInfo? = null,
     val networkInfo: NetworkInfo? = null,
-    val sensorInfo: SensorInfo? = null
+    val sensorInfo: SensorInfo? = null,
+    val displayInfo: DisplayInfo? = null,
+    val bluetoothInfo: BluetoothInfo? = null,
+    val systemInfo: SystemInfo? = null,
+    val nfcInfo: NfcInfo? = null,
+    val gpsInfo: GpsInfo? = null,
+    val speakerInfo: SpeakerInfo? = null
 )
 
 data class RamInfo(
@@ -56,5 +62,46 @@ data class SensorInfo(
     val gyroscopeAvailable: Boolean,
     val proximityAvailable: Boolean,
     val lightSensorAvailable: Boolean
+)
+
+data class DisplayInfo(
+    val screenSizeInches: Float,
+    val resolutionWidth: Int,
+    val resolutionHeight: Int,
+    val refreshRate: Float,
+    val density: Int,
+    val brightnessLevel: Int
+)
+
+data class BluetoothInfo(
+    val isSupported: Boolean,
+    val isEnabled: Boolean,
+    val deviceName: String,
+    val bluetoothVersion: String
+)
+
+data class SystemInfo(
+    val androidVersion: String,
+    val sdkVersion: Int,
+    val deviceManufacturer: String,
+    val deviceModel: String,
+    val deviceBrand: String
+)
+
+data class NfcInfo(
+    val isSupported: Boolean,
+    val isEnabled: Boolean
+)
+
+data class GpsInfo(
+    val isEnabled: Boolean,
+    val isSupported: Boolean,
+    val providerCount: Int
+)
+
+data class SpeakerInfo(
+    val isAvailable: Boolean,
+    val maxVolume: Int,
+    val currentVolume: Int
 )
 
