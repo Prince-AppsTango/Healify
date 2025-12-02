@@ -63,10 +63,19 @@ fun PhoneHealthScreen() {
             Box(modifier = Modifier.padding(horizontal = 15.dp)) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
                     CategoryCard(
-                        text = "battery",
+                        text = "Battery",
+                        subTitle = phoneHealthStatus.value.firstOrNull()?.data?.status?.toString() ?: "Unknown",
+                        color = when(phoneHealthStatus.value.firstOrNull()?.data?.status) {
+                            "Good" -> Color(0xFF4CAF50)
+                            "Average" -> Color(0xFFFFC107)
+                            "Poor" -> Color(0xFFFF5722)
+                            "Critical" -> Color(0xFFF44336)
+                            else -> Color.Gray
+                        }
                     )
                     CategoryCard(
-                        text = "battery",
+                        text = "Storage",
+                        subTitle = "${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.freeGB?.toInt() ?: 0} GB / ${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.totalGB?.toInt() ?: 0} GB",
                     )
                 }
             }

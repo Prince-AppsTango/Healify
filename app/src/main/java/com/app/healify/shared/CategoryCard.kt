@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CategoryCard(text: String, modifier: Modifier = Modifier) {
+fun CategoryCard(text: String, subTitle:String,color: Color = Color.Black, modifier: Modifier = Modifier) {
     Box(modifier = modifier
         .width(180.dp)
         .border(width = 0.5.dp, color = Color.LightGray.copy(alpha = 0.3f), shape = MaterialTheme.shapes.large)
@@ -48,17 +48,17 @@ fun CategoryCard(text: String, modifier: Modifier = Modifier) {
                     fontSize = 18.sp,
                 )
                 Text(
-                    "Good",
-                    color = Color.Black,
+                    subTitle,
+                    color = color,
                     fontWeight = FontWeight.W500,
                     fontSize = 16.sp,
                 )
-                Text(
-                    "Temp: 35°C",
-                    color = Color.Gray,
-                    fontWeight = FontWeight.W400,
-                    fontSize = 16.sp,
-                )
+//                Text(
+//                    "Temp: 35°C",
+//                    color = Color.Gray,
+//                    fontWeight = FontWeight.W400,
+//                    fontSize = 16.sp,
+//                )
             }
         }
     }
