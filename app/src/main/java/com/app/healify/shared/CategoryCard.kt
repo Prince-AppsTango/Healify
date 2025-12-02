@@ -42,6 +42,7 @@ fun CategoryCard(text: String, subTitle:String,color: Color = Color.Black,imageI
                     color = Color.Black,
                     fontWeight = FontWeight.W500,
                     fontSize = 18.sp,
+                    maxLines = 1
                 )
                 Text(
                     subTitle,
