@@ -19,16 +19,19 @@ class PhoneHealthViewModel(private val batteryHelper: BatteryHelper) : ViewModel
         val battery = batteryHelper.getBatteryHealth()
         val storage = batteryHelper.getStorageHealth()
         val ramInfo = batteryHelper.getRamInfo(context);
+        val cpuInfo = batteryHelper.getCpuInfo();
         val score = battery.percentage * 0.3f +
                 ((storage.freeGB / storage.totalGB) * 100).toFloat() * 0.2f +
-                ((ramInfo.freeGB / ramInfo.totalGB) * 100).toFloat() * 0.2f
+                ((ramInfo.freeGB / ramInfo.totalGB) * 100).toFloat() * 0.2f +
+                70f * 0.15f
         Log.d("PhoneHealthVM", "Calculated Score: $score")
         _healthPercent.value = (score / 100f)
         _hasRunDiagnostics.value = listOf(
             PhoneHealthModel(
                 data = battery,
                 storageHealthModel = storage,
-                ramInfo = ramInfo
+                ramInfo = ramInfo,
+                cpuInfo = cpuInfo
             )
         )
     }

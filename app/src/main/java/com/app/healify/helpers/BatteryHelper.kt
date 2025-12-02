@@ -5,8 +5,10 @@ import android.os.BatteryManager
 import android.os.Environment
 import android.os.StatFs
 import com.app.healify.models.BatteryHealthModel
+import com.app.healify.models.CpuInfo
 import com.app.healify.models.RamInfo
 import com.app.healify.models.StorageHealthModel
+import java.io.File
 
 class BatteryHelper(private val context: Context) {
 
@@ -52,5 +54,46 @@ class BatteryHelper(private val context: Context) {
             freeGB = String.format("%.2f", availableRam).toDouble()
         )
     }
+
+
+    fun getCpuInfo(): CpuInfo {
+        val cpuName = getCpuName()
+        val cores = Runtime.getRuntime().availableProcessors()
+        val arch = System.getProperty("os.arch") ?: "Unknown"
+        val freqs = getCpuFrequencies()
+
+        return CpuInfo(
+            cpuName = cpuName,
+            cores = cores,
+            architecture = arch,
+            frequenciesMHz = freqs
+        )
+    }
+
+    private fun getCpuName(): String {
+        return try {
+            val reader = File("/proc/cpuinfo").readLines()
+            val line = reader.firstOrNull { it.startsWith("Hardware") || it.startsWith("model name") }
+            line?.substringAfter(":")?.trim() ?: "Unknown"
+        } catch (e: Exception) {
+            "Unknown"
+        }
+    }
+
+    private fun getCpuFrequencies(): List<Int> {
+        val result = mutableListOf<Int>()
+        try {
+            val cpuCount = Runtime.getRuntime().availableProcessors()
+            for (i in 0 until cpuCount) {
+                val file = File("/sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq")
+                if (file.exists()) {
+                    val mhz = file.readText().trim().toInt() / 1000
+                    result.add(mhz)
+                }
+            }
+        } catch (_: Exception) {}
+        return result
+    }
+
 
 }
