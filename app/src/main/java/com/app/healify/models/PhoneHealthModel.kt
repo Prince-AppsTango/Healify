@@ -13,5 +13,12 @@ data class BatteryHealthModel(
 
 data class PhoneHealthModel(
     val data: BatteryHealthModel,
-    val storageHealthModel: StorageHealthModel
+    val storageHealthModel: StorageHealthModel,
+    val ramInfo: RamInfo? = null
+)
+
+data class RamInfo(
+    val totalGB: Double,
+    val usedGB: Double,
+    val freeGB: Double
 )

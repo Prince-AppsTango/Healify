@@ -63,7 +63,7 @@ fun PhoneHealthScreen() {
                 HealthProgressCard(percent = healthPercent.value)
             }
             Spacer(modifier = Modifier.height(10.dp))
-            Box(modifier = Modifier.padding(horizontal = 15.dp)) {
+            Column(modifier = Modifier.padding(horizontal = 15.dp)) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
                     CategoryCard(
                         text = "Battery",
@@ -75,6 +75,18 @@ fun PhoneHealthScreen() {
                             "Critical" -> Color(0xFFF44336)
                             else -> Color.Gray
                         }
+                    )
+                    CategoryCard(
+                        text = "Storage",
+                        subTitle = "${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.freeGB?.toInt() ?: 0} GB / ${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.totalGB?.toInt() ?: 0} GB",
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
+                    CategoryCard(
+                        text = "RAM",
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB != null)  "Free: ${phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB?.toInt() } GB"  else "N/A",
+                        color = if ((phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB ?: 0.0) >= 2.0) Color.Black else Color.Gray
                     )
                     CategoryCard(
                         text = "Storage",
@@ -96,7 +108,7 @@ fun PhoneHealthScreen() {
                             shape = MaterialTheme.shapes.large
                         )
                         .clickable {
-                            viewModel.runFullDiagnostics()
+                            viewModel.runFullDiagnostics(context)
                         }
                         .padding(5.dp),
                     contentAlignment = Alignment.Center

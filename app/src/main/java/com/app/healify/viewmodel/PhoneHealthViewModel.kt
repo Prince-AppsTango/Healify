@@ -1,5 +1,6 @@
 package com.app.healify.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.app.healify.helpers.BatteryHelper
@@ -14,17 +15,20 @@ class PhoneHealthViewModel(private val batteryHelper: BatteryHelper) : ViewModel
     private val  _hasRunDiagnostics = MutableStateFlow<List<PhoneHealthModel>>(emptyList())
     val hasRunDiagnostics = _hasRunDiagnostics.asStateFlow()
 
-    fun runFullDiagnostics() {
+    fun runFullDiagnostics(context: Context) {
         val battery = batteryHelper.getBatteryHealth()
         val storage = batteryHelper.getStorageHealth()
+        val ramInfo = batteryHelper.getRamInfo(context);
         val score = battery.percentage * 0.3f +
-                ((storage.freeGB / storage.totalGB) * 100).toFloat() * 0.2f
+                ((storage.freeGB / storage.totalGB) * 100).toFloat() * 0.2f +
+                ((ramInfo.freeGB / ramInfo.totalGB) * 100).toFloat() * 0.2f
         Log.d("PhoneHealthVM", "Calculated Score: $score")
         _healthPercent.value = (score / 100f)
         _hasRunDiagnostics.value = listOf(
             PhoneHealthModel(
                 data = battery,
-                storageHealthModel = storage
+                storageHealthModel = storage,
+                ramInfo = ramInfo
             )
         )
     }

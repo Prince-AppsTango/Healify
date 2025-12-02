@@ -1,9 +1,11 @@
 package com.app.healify.helpers
+import android.app.ActivityManager
 import android.content.Context
 import android.os.BatteryManager
 import android.os.Environment
 import android.os.StatFs
 import com.app.healify.models.BatteryHealthModel
+import com.app.healify.models.RamInfo
 import com.app.healify.models.StorageHealthModel
 
 class BatteryHelper(private val context: Context) {
@@ -34,4 +36,21 @@ class BatteryHelper(private val context: Context) {
             usedGB = usedBytes.toDouble() / gb
         )
     }
+
+    fun getRamInfo(context: Context): RamInfo {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val memoryInfo = ActivityManager.MemoryInfo()
+        activityManager.getMemoryInfo(memoryInfo)
+
+        val totalRam = memoryInfo.totalMem.toDouble() / (1024 * 1024 * 1024) // GB
+        val availableRam = memoryInfo.availMem.toDouble() / (1024 * 1024 * 1024) // GB
+        val usedRam = totalRam - availableRam
+
+        return RamInfo(
+            totalGB = String.format("%.2f", totalRam).toDouble(),
+            usedGB = String.format("%.2f", usedRam).toDouble(),
+            freeGB = String.format("%.2f", availableRam).toDouble()
+        )
+    }
+
 }
