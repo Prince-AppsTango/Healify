@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,17 +47,8 @@ fun PhoneHealthScreen() {
         factory = PhoneHealthVMFactory(BatteryHelper(context))
     )
     val healthPercent  =  viewModel.healthPercent.collectAsState()
+    val phoneHealthStatus = viewModel.hasRunDiagnostics.collectAsState()
 
-    val textList = listOf<String>(
-        "Battery",
-        "Storage",
-        "Memory",
-        "Sensors",
-        "Camera",
-        "Network",
-        "Speakers",
-        "Microphone",
-    )
     SafeArea {
         Column(
             modifier = Modifier
@@ -69,23 +61,16 @@ fun PhoneHealthScreen() {
             }
             Spacer(modifier = Modifier.height(10.dp))
             Box(modifier = Modifier.padding(horizontal = 15.dp)) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxHeight(0.85f),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    content = {
-                        items(textList.size) { item ->
-                            CategoryCard(
-                                text = textList[item],
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                        }
-                    }
-                )
+                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
+                    CategoryCard(
+                        text = "battery",
+                    )
+                    CategoryCard(
+                        text = "battery",
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.weight(1f))
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Box(
                     modifier = Modifier
@@ -113,6 +98,7 @@ fun PhoneHealthScreen() {
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }

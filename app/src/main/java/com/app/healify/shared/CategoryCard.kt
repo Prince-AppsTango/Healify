@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CategoryCard(text: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier
-        .height(90.dp)
         .width(180.dp)
         .border(width = 0.5.dp, color = Color.LightGray.copy(alpha = 0.3f), shape = MaterialTheme.shapes.large)
         .shadow(
