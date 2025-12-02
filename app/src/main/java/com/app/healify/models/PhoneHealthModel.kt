@@ -15,7 +15,9 @@ data class PhoneHealthModel(
     val data: BatteryHealthModel,
     val storageHealthModel: StorageHealthModel,
     val ramInfo: RamInfo? = null,
-    val cpuInfo: CpuInfo? = null
+    val cpuInfo: CpuInfo? = null,
+    val cameraInfo: CameraInfo? = null,
+    val microphoneInfo: MicrophoneInfo? = null
 )
 
 data class RamInfo(
@@ -30,3 +32,13 @@ data class CpuInfo(
     val architecture: String,
     val frequenciesMHz: List<Int>
 )
+
+data class CameraInfo(
+    val isAvailable: Boolean,
+    val numberOfCameras: Int
+)
+
+data class MicrophoneInfo(
+    val isAvailable: Boolean
+)
+

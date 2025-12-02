@@ -1,11 +1,16 @@
 package com.app.healify.helpers
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.PackageManager
+import android.hardware.camera2.CameraManager
+import android.media.AudioManager
 import android.os.BatteryManager
 import android.os.Environment
 import android.os.StatFs
 import com.app.healify.models.BatteryHealthModel
+import com.app.healify.models.CameraInfo
 import com.app.healify.models.CpuInfo
+import com.app.healify.models.MicrophoneInfo
 import com.app.healify.models.RamInfo
 import com.app.healify.models.StorageHealthModel
 import java.io.File
@@ -95,5 +100,31 @@ class BatteryHelper(private val context: Context) {
         return result
     }
 
+    fun getCameraInfo(): CameraInfo {
+        return try {
+            val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            val cameraIdList = cameraManager.cameraIdList
+            val hasCameraFeature = context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
+
+            CameraInfo(
+                isAvailable = hasCameraFeature && cameraIdList.isNotEmpty(),
+                numberOfCameras = cameraIdList.size
+            )
+        } catch (e: Exception) {
+            CameraInfo(isAvailable = false, numberOfCameras = 0)
+        }
+    }
+
+    fun getMicrophoneInfo(): MicrophoneInfo {
+        return try {
+            val hasMicrophoneFeature = context.packageManager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+            val isMicAvailable = hasMicrophoneFeature && audioManager != null
+
+            MicrophoneInfo(isAvailable = isMicAvailable)
+        } catch (e: Exception) {
+            MicrophoneInfo(isAvailable = false)
+        }
+    }
 
 }

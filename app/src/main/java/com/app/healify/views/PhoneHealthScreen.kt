@@ -102,6 +102,28 @@ fun PhoneHealthScreen() {
                         modifier = Modifier.weight(1f)
                     )
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(modifier = Modifier.fillMaxWidth()){
+                    CategoryCard(
+                        text = "Camera",
+                        imageId = R.drawable.camera,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.cameraInfo?.isAvailable == true)
+                            "${phoneHealthStatus.value.firstOrNull()?.cameraInfo?.numberOfCameras} Camera(s)"
+                        else "Not Available",
+                        color = if(phoneHealthStatus.value.firstOrNull()?.cameraInfo?.isAvailable == true) Color(0xFF4CAF50) else Color(0xFFFF5722),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    CategoryCard(
+                        text = "Microphone",
+                        imageId = R.drawable.microphone,
+                        subTitle = if(phoneHealthStatus.value.firstOrNull()?.microphoneInfo?.isAvailable == true)
+                            "Working"
+                        else "Not Available",
+                        color = if(phoneHealthStatus.value.firstOrNull()?.microphoneInfo?.isAvailable == true) Color(0xFF4CAF50) else Color(0xFFFF5722),
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
             Spacer(modifier = Modifier.weight(1f))
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
