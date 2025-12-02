@@ -2,7 +2,6 @@ package com.app.healify.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -62,7 +62,7 @@ fun PhoneHealthScreen() {
             }
             Spacer(modifier = Modifier.height(10.dp))
             Column(modifier = Modifier.padding(horizontal = 15.dp)) {
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
+                Row(modifier = Modifier.fillMaxWidth()){
                     CategoryCard(
                         text = "Battery",
                         subTitle = if(phoneHealthStatus.value.firstOrNull()?.data?.percentage != null) "${phoneHealthStatus.value.firstOrNull()?.data?.percentage}% ${phoneHealthStatus.value.firstOrNull()?.data?.status?.toString()}" else "N/A",
@@ -73,27 +73,33 @@ fun PhoneHealthScreen() {
                             "Poor" -> Color(0xFFFF5722)
                             "Critical" -> Color(0xFFF44336)
                             else -> Color.Gray
-                        }
+                        },
+                        modifier = Modifier.weight(1f)
                     )
+                    Spacer(modifier = Modifier.width(10.dp))
                     CategoryCard(
                         text = "Storage",
                         imageId = R.drawable.database,
-                        subTitle = "${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.freeGB?.toInt() ?: 0} GB / ${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.totalGB?.toInt() ?: 0} GB",
+                        subTitle = "${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.freeGB?.toInt() ?: 0}GB/${ phoneHealthStatus.value.firstOrNull()?.storageHealthModel?.totalGB?.toInt() ?: 0}GB",
+                        modifier = Modifier.weight(1f)
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
+                Row(modifier = Modifier.fillMaxWidth()){
                     CategoryCard(
                         text = "RAM",
                         imageId = R.drawable.ram,
                         subTitle = if(phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB != null)  "Free: ${phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB?.toInt() } GB"  else "N/A",
-                        color = if ((phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB ?: 0.0) >= 2.0) Color.Black else Color.Gray
+                        color = if ((phoneHealthStatus.value.firstOrNull()?.ramInfo?.freeGB ?: 0.0) >= 2.0) Color.Black else Color.Gray,
+                        modifier = Modifier.weight(1f)
                     )
+                    Spacer(modifier = Modifier.width(10.dp))
                     CategoryCard(
                         text = "Cores",
                         imageId = R.drawable.cpu,
                         subTitle = if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) "${ phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores}" else "N/A",
-                        color =  if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) Color.Black else Color.Gray
+                        color =  if( phoneHealthStatus.value.firstOrNull()?.cpuInfo?.cores != null) Color.Black else Color.Gray,
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }

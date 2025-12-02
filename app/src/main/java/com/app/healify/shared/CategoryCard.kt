@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CategoryCard(text: String, subTitle:String,color: Color = Color.Black,imageId:Int, modifier: Modifier = Modifier) {
     Box(modifier = modifier
-        .width(180.dp)
         .border(width = 0.5.dp, color = Color.LightGray.copy(alpha = 0.3f), shape = MaterialTheme.shapes.large)
         .shadow(
             elevation = 10.dp,
@@ -48,7 +47,8 @@ fun CategoryCard(text: String, subTitle:String,color: Color = Color.Black,imageI
                     subTitle,
                     color = color,
                     fontWeight = FontWeight.W500,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
+                    maxLines = 1
                 )
 //                Text(
 //                    "Temp: 35°C",
